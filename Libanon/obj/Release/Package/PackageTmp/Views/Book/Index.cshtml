@@ -1,0 +1,112 @@
+﻿@using Libanon.Utility
+@model IEnumerable<Libanon.Models.DTO.BookDTO>
+@{
+    ViewBag.Title = "Books List";
+}
+
+<div class="d-flex justify-content-between">
+    <h2 class="d-inline-block">Books List</h2>
+
+    <p class="btn btn-primary">
+        @Html.ActionLink("Create New", "Create", null, new { @class = "no-underline text-white" })
+    </p>
+</div>
+<table id="bookstable">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.Title)</th>
+            <th>@Html.DisplayNameFor(model => model.Author)</th>
+            <th>@Html.DisplayNameFor(model => model.Description)</th>
+            <th>@Html.DisplayNameFor(model => model.ISBN)</th>
+            <th>Category</th>
+            <th>IssuedYear</th>
+            <th>Average Rating</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td>@Html.DisplayFor(modelItem => item.Author)</td>
+                <td>
+                    @{
+
+                        var sumTrimed = item.Description.ToSafeSubString(50);
+
+                    }
+                    @Html.DisplayFor(modelItem => sumTrimed)
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.ISBN)</td>
+                <td>@Html.DisplayFor(modelItem => item.Category)</td>
+                <td>@Html.DisplayFor(modelItem => item.IssuedYear)</td>
+                <td>@Html.DisplayFor(modelItem => item.AverageRating)</td>
+                <td>
+                    @{
+                        var status = "Available";
+                        if (item.Borrower != null)
+                        {
+                            status = "Borrowed";
+                        }
+                    }
+                    @Html.DisplayFor(modelItem => status)
+                    </td>
+
+            <td>
+                @{
+                    var tm = "#myModal" + item.Id;
+                    var mid = "myModal" + item.Id;
+                }
+                <div class="w-75 btn-group" role="group">
+                    <a href="@Url.Action("Details", "Book", new { id = item.Id })" class="btn btn-primary">
+                        <i class="bi bi-info-circle"></i>
+                    </a>
+                    <a href="@Url.Action("Edit", "Book", new { id = item.Id })" class="btn btn-success">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="@tm" class="btn btn-danger">
+                        <i class="bi bi-archive-fill"></i>
+                    </button>
+                </div>
+
+                @*Modal*@
+                <div class="modal fade" id="@mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel">Delete Confirmation</h4>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure want to delete this item?
+                            </div>
+                            <div class="modal-footer">
+                                <a href="@Url.Action("Delete", "Book", new { id = item.Id })" id="deleteBtn" class="btn bg-danger mr-1">Delete</a>
+                                <a class="btn btn-primary mr-1" data-bs-dismiss="modal">Close</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+
+    </tbody>
+</table>
+@section Scripts {
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery-dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/laEnableCascadeDeleteOnCategoriesTable/toastr.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#bookstable').DataTable();
+        });
+
+    </script>
+}

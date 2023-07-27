@@ -1,0 +1,90 @@
+﻿@using System.Collections
+@model Libanon.Models.DTO.BookUpdateDTO
+@{
+    ViewBag.Title = "Edit";
+}
+
+<form method="post">
+    @Html.AntiForgeryToken()
+   
+    @Html.HiddenFor(model => model.Id)
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit Book</h2>
+            <hr />
+        </div>
+        <div class="text-center">
+            <img src="@{@Model.ImageUrl}" style="max-width: 300px" class="rounded" alt="@{@Model.Title}">
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="form-group mb-3 col-6">
+            @Html.LabelFor(b => b.Title) <br />
+            @Html.TextBoxFor(b => b.Title, new { @class = "form-control" })
+            @Html.ValidationMessageFor(b => b.Title, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group mb-3 col-6">
+            @Html.LabelFor(b => b.ImageUrl) <br />
+            @Html.TextBoxFor(b => b.ImageUrl, new { @class = "form-control" })
+            @Html.ValidationMessageFor(b => b.ImageUrl, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group mb-3 col-6">
+            @Html.LabelFor(b => b.Author) <br />
+            @Html.TextBoxFor(b => b.Author, new { @class = "form-control" })
+            @Html.ValidationMessageFor(b => b.Author, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group mb-3 col-6">
+            @Html.LabelFor(b => b.Description) <br />
+            @Html.TextAreaFor(b => b.Description, new { @class = "form-control" })
+            @Html.ValidationMessageFor(b => b.Description, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group mb-3 col-6">
+            @Html.LabelFor(b => b.ISBN) <br />
+            @Html.TextBoxFor(b => b.ISBN, new { @class = "form-control" })
+            @Html.ValidationMessageFor(b => b.ISBN, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group mb-3 col-6">
+            @Html.LabelFor(b => b.Category) <br />
+            @Html.TextBoxFor(b => b.Category, new { @class = "form-control" })
+            @Html.ValidationMessageFor(b => b.Category, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group mb-3 col-6">
+            @Html.LabelFor(b => b.IssuedYear) <br />
+            @Html.TextBoxFor(b => b.IssuedYear, new { @class = "form-control" })
+            @Html.ValidationMessageFor(b => b.IssuedYear, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+        <button type="submit" class="btn btn-primary" style="width: 150px">Update</button>
+        <a href="@Url.Action("Index", "Book")" class="btn btn-secondary" style="width: 150px">
+            Back to List
+        </a>
+        @{
+            var tm = "#myModal" + Model.Id;
+            var mid = "myModal" + Model.Id;
+        }
+        <button type="button" data-bs-toggle="modal" data-bs-target="@tm" class="btn btn-danger">
+            Delete
+        </button>
+
+        @*Modal*@
+        <div class="modal fade" id="@mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Delete Confirmation</h4>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure want to delete this item?
+                    </div>
+                    <div class="modal-footer">
+                        <a href="@Url.Action("Delete", "Book", new {id = Model.Id})" id="deleteBtn" class="btn bg-danger mr-1">Delete</a>
+                        <a class="btn btn-primary mr-1" data-bs-dismiss="modal">Close</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

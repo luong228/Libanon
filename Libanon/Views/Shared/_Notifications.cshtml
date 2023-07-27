@@ -1,0 +1,19 @@
+﻿@if (HttpContext.Current.Session["success"] is string) 
+{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="text/javascript">
+            toastr.success('@HttpContext.Current.Session["success"]');
+        /**/
+    </script>
+    HttpContext.Current.Session.Remove("success");
+}
+@if (HttpContext.Current.Session["error"] is string)
+{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.error('@HttpContext.Current.Session["error"]');
+    </script>
+    HttpContext.Current.Session.Remove("error");
+}
